@@ -1,33 +1,34 @@
 var _PACKET = undefined;
 
-function PACKET( g_worker ){
+function PACKET(g_worker) {
 
-    // 매칭 될 함수
-    var match_funcs = {
-        sum: sum
-    };
+  // 매칭 될 함수
+  var match_funcs = {
+    sum: sum
+  };
 
-    function on( e ){
-        var type = e.data.type;
-        var data = e.data.val;
-        
-        ( match_funcs.hasOwnProperty(type) ) && (
-            match_funcs[type]( data )
-        );
-    }
+  function on(e) {
+    var type = e.data.type;
+    var data = e.data.val;
 
-    function send( type, data ){
-        g_worker.postMessage({ type: type, val:data });
-    }
+    (match_funcs.hasOwnProperty(type)) && (
+        match_funcs[type](data)
+    );
+  }
 
-    function sum( dataArr ){
-        send( 'sum', dataArr[0] + dataArr[1] );
-    }
+  function send(type, data) {
+    g_worker.postMessage({type: type, val: data});
+  }
 
-    function init(){
-        g_worker.onmessage = on;   
-    }
-    init();
+  function sum(dataArr) {
+    send('sum', dataArr[0] + dataArr[1]);
+  }
+
+  function init() {
+    g_worker.onmessage = on;
+  }
+
+  init();
 }
 
-_PACKET = new PACKET( this );
+_PACKET = new PACKET(this);

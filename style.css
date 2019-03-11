@@ -1,55 +1,55 @@
 html,
 body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  background-color: #5A5C64;
-  word-wrap: break-word;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: #5A5C64;
+    word-wrap: break-word;
 }
 
 p {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
-  margin: 7px;
-  height: calc(100% - 55px);
+    margin: 7px;
+    height: calc(100% - 55px);
 }
 
 .header {
-  height: 32px;
-  background-color: #27282E;
-  color: #7B7D84;
-  font-family: 'Droid Sans';
-  font-weight: 600;
-  margin-bottom: 1px;
+    height: 32px;
+    background-color: #27282E;
+    color: #7B7D84;
+    font-family: 'Droid Sans';
+    font-weight: 600;
+    margin-bottom: 1px;
 
 
-  font-size: 14px;
-  cursor: default;
-  font-family: "Droid Sans";
-  color: rgb(181, 184, 193);
+    font-size: 14px;
+    cursor: default;
+    font-family: "Droid Sans";
+    color: rgb(181, 184, 193);
 
-  box-sizing: border-box;
-  padding: 5px;
+    box-sizing: border-box;
+    padding: 5px;
 }
 
 .content {
-  height: 100%;
-  padding: 5px;
-  background-color: #27282E;
+    height: 100%;
+    padding: 5px;
+    background-color: #27282E;
 }
 
 .canvas-wrapper {
-  height: 100%;
-  width: 100%;
-  background-color: #5A5C64;
-  border-radius: 5px;
+    height: 100%;
+    width: 100%;
+    background-color: #5A5C64;
+    border-radius: 5px;
 }
 
 canvas {
-  border-radius: 5px;
+    border-radius: 5px;
 }

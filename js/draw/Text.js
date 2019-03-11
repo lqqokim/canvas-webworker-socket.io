@@ -111,9 +111,15 @@ class Text {
 
     let align_x = 0;
     switch (cont.ctx.textAlign) {
-      case 'left': align_x = 0; break;
-      case 'center': align_x = w / 2; break;
-      case 'right': align_x = w; break;
+      case 'left':
+        align_x = 0;
+        break;
+      case 'center':
+        align_x = w / 2;
+        break;
+      case 'right':
+        align_x = w;
+        break;
     }
 
     cont.align_x = align_x;
@@ -136,12 +142,24 @@ class Text {
     let item;
 
     switch (type) {
-      case 'current_count': item = this.current_count; break;
-      case 'request_sec': item = this.request_sec; break;
-      case 'response_sec': item = this.response_sec; break;
-      case 'warning': item = this.warning; break;
-      case 'normal': item = this.normal; break;
-      case 'alarm': item = this.alarm; break;
+      case 'current_count':
+        item = this.current_count;
+        break;
+      case 'request_sec':
+        item = this.request_sec;
+        break;
+      case 'response_sec':
+        item = this.response_sec;
+        break;
+      case 'warning':
+        item = this.warning;
+        break;
+      case 'normal':
+        item = this.normal;
+        break;
+      case 'alarm':
+        item = this.alarm;
+        break;
     }
 
     item.num.ctx.clearRect(0, 0, item.num.ctx.canvas.width, item.num.ctx.canvas.height);

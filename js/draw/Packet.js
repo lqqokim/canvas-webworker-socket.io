@@ -1,5 +1,4 @@
 import Sprite from './Sprite.js';
-import Text from './Text.js';
 
 class Packet {
   constructor(app) {
@@ -133,9 +132,7 @@ class Packet {
             this.packet_state_update('output', sprite.type);
           }, sprite.random_time);
         }
-      }
-
-      else if (sprite.state == 'output' && sprite.x < this.spriteInfo.get_output_end_x()) {
+      } else if (sprite.state == 'output' && sprite.x < this.spriteInfo.get_output_end_x()) {
         sprite.x += sprite.speed;
 
         // output x축 마지막 위치를 넘어갔을 때
@@ -143,16 +140,13 @@ class Packet {
           sprite.state = 'end';
           this.app.remove(sprite);
         }
-      }
-
-      else if (sprite.state == 'wait') {
+      } else if (sprite.state == 'wait') {
         sprite.x += sprite.wait_speed;
 
         if (sprite.wait_arrow == 'right' && sprite.x >= sprite.target_x) {
           // sprite.set_x_rand(this.spriteInfo.get_x_rand());
           sprite.set_x_rand();
-        }
-        else if (sprite.wait_arrow == 'left' && sprite.x <= sprite.target_x) {
+        } else if (sprite.wait_arrow == 'left' && sprite.x <= sprite.target_x) {
           // sprite.set_x_rand(this.spriteInfo.get_x_rand());
           sprite.set_x_rand();
         }
@@ -167,8 +161,7 @@ class Packet {
   packet_state_update(type, state) {
     if (type == 'wait') {
       this.type_state_count[state]++;
-    }
-    else if (type == 'output') {
+    } else if (type == 'output') {
       this.type_state_count[state]--;
       this.output_count++;
     }
@@ -178,9 +171,9 @@ class Packet {
     this.text.change_num('warning', this.type_state_count.warning);
 
     this.text.change_num('current_count', (
-      this.type_state_count.warning +
-      this.type_state_count.alarm +
-      this.type_state_count.warning
+        this.type_state_count.warning +
+        this.type_state_count.alarm +
+        this.type_state_count.warning
     ));
   }
 
@@ -201,7 +194,6 @@ class Packet {
   }
 
 
-
   create_packet_loop() {
     this.create_packet();
     this.input_count++;
@@ -209,7 +201,7 @@ class Packet {
     setTimeout(() => {
       this.create_packet_loop();
     }, 1000 / (Math.floor(Math.random() * 10) + 1));
-    
+
   }
 
 }
