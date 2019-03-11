@@ -8,17 +8,34 @@ class Packet {
 
     this.packets = [];
     this.MOVE_IMAGES = {
-      blue: '/images/SpeedSQ_Blue.png',
-      red: '/images/SpeedSQ_Red.png',
-      yellow: '/images/SpeedSQ_Yellow.png'
+      BLUE: '/images/SpeedSQ_BLUE.png',
+      RED: '/images/SpeedSQ_RED.png',
+      YELLOW: '/images/SpeedSQ_YELLOW.png'
     };
 
     this.WAIT_IMAGES = {
-      blue: '/images/nBlue.png',
-      red: '/images/nRed.png',
-      yellow: '/images/nYellow.png'
+      BLUE: '/images/nBLUE.png',
+      RED: '/images/nRED.png',
+      YELLOW: '/images/nYELLOW.png'
     };
 
+    this.PACKET_ARROW = {
+      LEFT: 'left',
+      RIGHT: 'right'
+    };
+
+    this.PACKET_TYPE = {
+      NORMAL: 'normal',
+      WARNING: 'warning',
+      ALARM: 'alarm'
+    };
+
+    this.PACKET_STATE = {
+      INPUT: 'input',
+      WAIT: 'wait',
+      OUTPUT: 'output',
+      END: 'end'
+    };
 
     this.type_state_count = {
       normal: 0,
@@ -26,17 +43,17 @@ class Packet {
       warning: 0
     };
 
-    this.input_count = 0;
-    this.output_count = 0;
+    this.inputCount = 0;
+    this.outputCount = 0;
 
     this.spriteInfo = new Sprite(app);
     // this.text = new Text(app);
   }
 
   init() {
-    this.create_packet_loop();
-    this.input_update();
-    this.output_update();
+    this.createPacketLoop();
+    this.updateInput();
+    this.updateOutput();
   }
 
   updatePacket() {
@@ -44,72 +61,68 @@ class Packet {
     let len = this.packets.length;
 
     while (i < len) {
-      this.packets[i].update();
+      this.packets[i].updateSprite();
       i++;
     }
   }
 
   create_packet() {
     // 1 ~ 20초 랜덤 시간 설정
-    const random_time = Math.floor(Math.random() * 20) + 1;
-    let input_img = this.MOVE_IMAGES.blue;
-    let output_img = this.MOVE_IMAGES.red;
-    let wait_img = this.WAIT_IMAGES.red;
-    let packet_type = 'alarm';
+    const waitTime = Math.floor(Math.random() * 20) + 1;
+    let inputImage = this.MOVE_IMAGES.BLUE;
+    let outputImage = this.MOVE_IMAGES.RED;
+    let waitImage = this.WAIT_IMAGES.RED;
+    let packetType = this.PACKET_TYPE.ALARM;
 
-    // 랜덤시간 0~5초 blue
-    if (random_time <= 5) {
-      output_img = this.MOVE_IMAGES.blue;
-      wait_img = this.WAIT_IMAGES.blue;
-      packet_type = 'normal';
+    // 랜덤시간 0~5초 BLUE
+    if (waitTime <= 5) {
+      outputImage = this.MOVE_IMAGES.BLUE;
+      waitImage = this.WAIT_IMAGES.BLUE;
+      packetType = this.PACKET_TYPE.NORMAL;
     }
-    // 랜덤시간 6~10초 yellow
-    else if (random_time <= 10) {
-      output_img = this.MOVE_IMAGES.yellow;
-      wait_img = this.WAIT_IMAGES.yellow;
-      packet_type = 'warning';
+    // 랜덤시간 6~10초 YELLOW
+    else if (waitTime <= 10) {
+      outputImage = this.MOVE_IMAGES.YELLOW;
+      waitImage = this.WAIT_IMAGES.YELLOW;
+      packetType = this.PACKET_TYPE.WARNING;
     }
 
     // (0: input/ 1: wait/ 2: output) 이미지 등록
-    let sprite = this.app.create.sprite([
-      input_img,
-      wait_img,
-      output_img
-    ]);
+    const sprite = this.app.create.sprite([inputImage, waitImage, outputImage]);
 
     // 패킷 상태 (input/output/stay)
-    sprite.state = 'input';
-    sprite.type = packet_type;
-    sprite.random_time = random_time * 1000;// 자바스크립트 기준 시간계산
+    sprite.state = this.PACKET_STATE.INPUT;
+    sprite.type = packetType;
+    sprite.waitTime = waitTime * 1000; // 자바스크립트 기준 시간계산
 
     sprite.x = this.spriteInfo.get_input_start_x();
-    sprite.y = this.spriteInfo.get_vertical_mid();          // y축 중심 설정
+    sprite.y = this.spriteInfo.get_vertical_mid(); // y축 중심 설정
     sprite.speed = 20;
 
     sprite.get_x_rand = this.spriteInfo.get_x_rand.bind(this.spriteInfo); //연결
 
     // sprite.set_x_rand = function (rand_x) {
     //   sprite.target_x = rand_x;//target_x: 랜덤으로 이동할 위치
-    sprite.set_x_rand = function () {
-      this.target_x = this.get_x_rand();//target_x: 랜덤으로 이동할 위치
-      if (this.x < this.target_x) {
-        this.wait_arrow = 'right';//목표지점에 대한 방향설정
-        this.wait_speed = 1;
+    sprite.set_x_rand = () => {
+      sprite.target_x = sprite.get_x_rand(); //target_x: 랜덤으로 이동할 위치
+      if (sprite.x < sprite.target_x) {
+        sprite.wait_arrow = this.PACKET_ARROW.RIGHT; //목표지점에 대한 방향설정
+        sprite.wait_speed = 1;
       } else {
-        this.wait_arrow = 'left';
-        this.wait_speed = -1;
+        sprite.wait_arrow = this.PACKET_ARROW.LEFT;
+        sprite.wait_speed = -1;
       }
     }
 
-    sprite.update = () => {
+    sprite.updateSprite = () => {
       // input 일 때
-      if (sprite.state == 'input' && sprite.x < this.spriteInfo.get_input_end_x()) {
+      if (sprite.state === this.PACKET_STATE.INPUT && sprite.x < this.spriteInfo.get_input_end_x()) {
         sprite.x += sprite.speed;
 
         // input x축 마지막 위치를 넘어갔을 때
         if (sprite.x >= this.spriteInfo.get_input_end_x()) {
-          sprite.state = 'wait';
-          sprite.change(1);
+          sprite.state = this.PACKET_STATE.WAIT;
+          sprite.changeSprite(1);
 
           // y축 랜덤
           sprite.x = this.spriteInfo.get_x_rand();
@@ -120,33 +133,33 @@ class Packet {
           sprite.set_x_rand();
 
           // 패킷 상태 업데이트 (카운트)
-          this.packet_state_update('wait', sprite.type);
+          this.updatePacketState(this.PACKET_STATE.WAIT, sprite.type);
 
 
           // 대기 시간 뒤에 output 처리
           setTimeout(() => {
-            sprite.state = 'output';
-            sprite.change(2);
+            sprite.state = this.PACKET_STATE.OUTPUT;
+            sprite.changeSprite(2);
             sprite.x = this.spriteInfo.get_output_start_x() - 130;
             sprite.y = this.spriteInfo.get_vertical_mid();
-            this.packet_state_update('output', sprite.type);
-          }, sprite.random_time);
+            this.updatePacketState(this.PACKET_STATE.OUTPUT, sprite.type);
+          }, sprite.waitTime);
         }
-      } else if (sprite.state == 'output' && sprite.x < this.spriteInfo.get_output_end_x()) {
+      } else if (sprite.state == this.PACKET_STATE.OUTPUT && sprite.x < this.spriteInfo.get_output_end_x()) {
         sprite.x += sprite.speed;
 
         // output x축 마지막 위치를 넘어갔을 때
         if (sprite.x >= this.spriteInfo.get_output_end_x()) {
-          sprite.state = 'end';
+          sprite.state = this.PACKET_TYPE.END;
           this.app.remove(sprite);
         }
-      } else if (sprite.state == 'wait') {
+      } else if (sprite.state == this.PACKET_STATE.WAIT) {
         sprite.x += sprite.wait_speed;
 
-        if (sprite.wait_arrow == 'right' && sprite.x >= sprite.target_x) {
+        if (sprite.wait_arrow == this.PACKET_ARROW.RIGHT && sprite.x >= sprite.target_x) {
           // sprite.set_x_rand(this.spriteInfo.get_x_rand());
           sprite.set_x_rand();
-        } else if (sprite.wait_arrow == 'left' && sprite.x <= sprite.target_x) {
+        } else if (sprite.wait_arrow == this.PACKET_ARROW.LEFT && sprite.x <= sprite.target_x) {
           // sprite.set_x_rand(this.spriteInfo.get_x_rand());
           sprite.set_x_rand();
         }
@@ -155,51 +168,53 @@ class Packet {
 
     // 패킷 이미지 등록
     this.app.add(sprite);
+
+
     this.packets.push(sprite);
   }
 
-  packet_state_update(type, state) {
+  updatePacketState(type, state) {
     if (type == 'wait') {
       this.type_state_count[state]++;
     } else if (type == 'output') {
       this.type_state_count[state]--;
-      this.output_count++;
+      this.outputCount++;
     }
 
-    this.text.change_num('normal', this.type_state_count.normal);
-    this.text.change_num('alarm', this.type_state_count.alarm);
-    this.text.change_num('warning', this.type_state_count.warning);
+    this.text.changeNum('normal', this.type_state_count.normal);
+    this.text.changeNum('alarm', this.type_state_count.alarm);
+    this.text.changeNum('warning', this.type_state_count.warning);
 
-    this.text.change_num('current_count', (
-        this.type_state_count.warning +
-        this.type_state_count.alarm +
-        this.type_state_count.warning
+    this.text.changeNum('current_count', (
+      this.type_state_count.warning +
+      this.type_state_count.alarm +
+      this.type_state_count.warning
     ));
   }
 
-  input_update() {
-    this.text.change_num('request_sec', this.input_count);
-    this.input_count = 0;
+  updateInput() {
+    this.text.changeNum('request_sec', this.inputCount);
+    this.inputCount = 0;
     setTimeout(() => {
-      this.input_update();
+      this.updateInput();
     }, 1000);
   }
 
-  output_update() {
-    this.text.change_num('response_sec', this.output_count);
-    this.output_count = 0;
+  updateOutput() {
+    this.text.changeNum('response_sec', this.outputCount);
+    this.outputCount = 0;
     setTimeout(() => {
-      this.output_update();
+      this.updateOutput();
     }, 1000);
   }
 
 
-  create_packet_loop() {
+  createPacketLoop() {
     this.create_packet();
-    this.input_count++;
-    // // setTimeout( create_packet_loop, 1000/10 );
+    this.inputCount++;
+    // // setTimeout( createPacketLoop, 1000/10 );
     setTimeout(() => {
-      this.create_packet_loop();
+      this.createPacketLoop();
     }, 1000 / (Math.floor(Math.random() * 10) + 1));
 
   }

@@ -5,7 +5,7 @@ import Packet from './draw/Packet.js';
 class Draw {
   constructor(app) {
     this.app = app;
-    this.app.updateDraw = this.updateDraw.bind(this);
+    this.app.updateObj = this.updateObj.bind(this);
     this.background = new Background(app);
     this.text = new Text(app);
     this.packet = new Packet(app);
@@ -20,7 +20,7 @@ class Draw {
     this.packet.init();
   }
 
-  updateDraw() {
+  updateObj() {
     this.background.update();
     this.text.update();
     this.packet.update();

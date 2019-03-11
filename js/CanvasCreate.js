@@ -1,26 +1,24 @@
 class CanvasCreate {
   constructor(canvas) {
     this.canvas = canvas;
-    this.image = this.create_image;
-    this.sprite = this.create_sprite;
+    this.image = this.createImage;
+    this.sprite = this.createSprite;
   }
 
   //캔버스에 그릴 기본적인 오브젝트
   createContainer(buffCtx) {
-    const container = {
+    return {
       ctx: buffCtx,
       x: 0,
       y: 0
     };
-
-    return container;
   }
 
   container(w, h) {
     return this.createContainer(this.canvas.createCanvas(w, h));
   }
 
-  create_image(url) {
+  createImage(url) {
     let ctx = this.canvas.createCanvas();
     let img = document.createElement('img');
     img.src = url;
@@ -30,15 +28,15 @@ class CanvasCreate {
     return createContainer(ctx);//이미지를 넘기는게 아니라 이미지를 그린 캔버스 컨텍스트를 넘긴다
   }
 
-  create_sprite(url_arr) {
+  createSprite(urls) {
     let ctx = this.canvas.createCanvas();
     let imgs = [];
-    let i = 0, len = url_arr.length;
+    let i = 0, len = urls.length;
 
     // 이미지 경로 갯수만큼 만들기
     while (i < len) {
       imgs[i] = document.createElement('img');
-      imgs[i].src = url_arr[i];
+      imgs[i].src = urls[i];
       i++;
     }
 
@@ -52,7 +50,7 @@ class CanvasCreate {
     container.imgs = imgs;
 
     // 이미지 교체
-    container.change = function (idx) {
+    container.changeSprite = function (idx) {
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       ctx.drawImage(this.imgs[idx], 0, 0);
     }

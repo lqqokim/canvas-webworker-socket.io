@@ -9,7 +9,6 @@ class Sprite {
     this.get_x_rand = this.get_x_rand;
     this.get_y_rand = this.get_y_rand;
     this.set_x_rand = this.set_x_rand;
-
   }
 
   get_input_start_x() {
@@ -17,13 +16,13 @@ class Sprite {
   }
 
   get_input_end_x() {
-    const divide_width = this.app.getWidth() / 5;
-    return divide_width * 2;
+    const divideWidth = this.app.getWidth() / 5;
+    return divideWidth * 2;
   }
 
   get_output_start_x() {
-    const divide_width = this.app.getWidth() / 5;
-    return (divide_width * 3) - 20;
+    const divideWidth = this.app.getWidth() / 5;
+    return (divideWidth * 3) - 20;
   }
 
   get_output_end_x() {
@@ -34,13 +33,14 @@ class Sprite {
     return (this.app.getHeight() * 0.5) - (22 * 0.5);//기본값 수직중앙
   }
 
+  //대기중인 packet이 좌우로 이동하는 랜덤 거리
   get_x_rand() {
     const start_x = this.get_input_end_x();
     const end_x = this.get_output_start_x();
     const width = end_x - start_x;
-    const rand_width = Math.floor(Math.random() * width);
+    const randWidth = Math.floor(Math.random() * width);
 
-    return start_x + rand_width;
+    return start_x + randWidth;
   }
 
   get_y_rand() {

@@ -14,8 +14,7 @@ class Canvas {
     this.targetEl.appendChild(this.ctx.canvas);
 
     this.bindEvent();
-    this.resizeCanvas();
-    console.log('Canvas init!!', this)
+    this.initCanvasSize();
   }
 
   createCanvas(width, height) {
@@ -30,14 +29,29 @@ class Canvas {
     return ctx;
   }
 
-  bindEvent() {
-    window.addEventListener('resize', this.resizeCanvas, false);
+  getTargetSize() {
+    return {
+      width: this.targetEl.clientWidth,
+      height: this.targetEl.clientHeight
+    };
   }
 
-  resizeCanvas() {
-    this.ctx.canvas.width = this.targetEl.clientWidth * 2;
-    this.ctx.canvas.height = this.targetEl.clientHeight * 2;
-    this.ctx.canvas.style = `width:${this.targetEl.clientWidth}px; height:${this.targetEl.clientHeight}px`;
+  bindEvent() {
+    let timer;
+
+    window.addEventListener('resize', () => {
+      timer && clearTimeout(timer);
+      timer = setTimeout(this.initCanvasSize())
+    }, false);
+  }
+
+  initCanvasSize() {
+    // this.ctx.canvas.width = this.getTargetSize().width * 2;
+    // this.ctx.canvas.height =  this.getTargetSize().height * 2;
+    // this.ctx.canvas.style = `width:${this.targetEl.clientWidth}px; height:${this.targetEl.clientHeight}px`;
+    console.log(this)
+    this.ctx.canvas.width = this.targetEl.clientWidth;
+    this.ctx.canvas.height =  this.targetEl.clientHeight ;
   }
 
   getContext() {
