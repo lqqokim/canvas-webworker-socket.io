@@ -7,7 +7,7 @@ class Background {
   }
 
   init() {
-    const canvasWidth = this.app.getWidth();
+    const canvasWidth = this.app.getWidth(); // 왜 getCanvasWidth key로 호출하지 않는지?
     const canvasHeight = this.app.getHeight();
     const devideWidth = canvasWidth / 5;
 

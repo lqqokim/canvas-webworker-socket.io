@@ -215,9 +215,10 @@ class Packet {
     // // setTimeout( createPacketLoop, 1000/10 );
     setTimeout(() => {
       this.createPacketLoop();
-    }, 1000 / (Math.floor(Math.random() * 10) + 1));
-
+    }, 200);
   }
+
+//0.2 초당 랜덤 개수
 
 }
 

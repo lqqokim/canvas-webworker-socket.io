@@ -28,7 +28,7 @@ function WORKER() {
   this.sum = req_sum;
 
   function res_sum(data) {
-    // console.log('res_sum', this)
+    console.log(data)
     (this.hasOwnProperty('res_sum')) && (
         this.res_sum(data)
     );
