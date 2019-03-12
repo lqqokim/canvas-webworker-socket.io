@@ -39,7 +39,10 @@ class CanvasRender {
     // 추가된 오브젝트 그리기
     while (drawIndex < drawLength) {
       const drawObj = this.drawObjs[drawIndex];
-      this.ctx.drawImage(drawObj.ctx.canvas, drawObj.x, drawObj.y); //drawImage 를 통해 캔버스를 그린다. 이미지를 바로 박아넣지 않았다.
+      if (!drawObj.isHidden) {
+        this.ctx.drawImage(drawObj.ctx.canvas, drawObj.x, drawObj.y); //drawImage 를 통해 캔버스를 그린다. 이미지를 바로 박아넣지 않았다.
+      }
+
       drawIndex++;
     }
   }

@@ -10,7 +10,8 @@ class CanvasCreate {
     return {
       ctx: buffCtx,
       x: 0,
-      y: 0
+      y: 0,
+      isHidden: false //isHidden이 true이면 감추고 false면 보여준다.
     };
   }
 

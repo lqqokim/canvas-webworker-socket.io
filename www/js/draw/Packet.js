@@ -4,7 +4,8 @@ class Packet {
   constructor(app) {
     this.app = app;
     this.init = this.init;
-    this.update = this.update123;
+    this.update = this.update;
+    this.createPacketLoop = this.createPacketLoop;
 
     this.packets = [];
     this.MOVE_IMAGES = {
@@ -51,12 +52,12 @@ class Packet {
   }
 
   init() {
-    this.createPacketLoop();
+    // this.createPacketLoop();
     this.updateInput();
     this.updateOutput();
   }
 
-  update123() {
+  update() {
     let i = 0;
     let len = this.packets.length;
 
@@ -66,9 +67,10 @@ class Packet {
     }
   }
 
-  create_packet() {
+  create_packet(delay, isHidden) {
     // 1 ~ 20초 랜덤 시간 설정
-    const waitTime = Math.floor(Math.random() * 20) + 1;
+    // const waitTime = Math.floor(Math.random() * 20) + 1;
+    const waitTime = delay;
     let inputImage = this.MOVE_IMAGES.BLUE;
     let outputImage = this.MOVE_IMAGES.RED;
     let waitImage = this.WAIT_IMAGES.RED;
@@ -90,6 +92,8 @@ class Packet {
     // (0: input/ 1: wait/ 2: output) 이미지 등록
     const sprite = this.app.create.sprite([inputImage, waitImage, outputImage]);
 
+    sprite.isHidden = isHidden;
+
     // 패킷 상태 (input/output/stay)
     sprite.state = this.PACKET_STATE.INPUT;
     sprite.type = packetType;
@@ -97,7 +101,7 @@ class Packet {
 
     sprite.x = this.spriteInfo.get_input_start_x();
     sprite.y = this.spriteInfo.get_vertical_mid(); // y축 중심 설정
-    sprite.speed = 20;
+    sprite.speed = 20; //패킷 속도
 
     sprite.get_x_rand = this.spriteInfo.get_x_rand.bind(this.spriteInfo); //연결
 
@@ -119,10 +123,11 @@ class Packet {
       if (sprite.state === this.PACKET_STATE.INPUT && sprite.x < this.spriteInfo.get_input_end_x()) {
         sprite.x += sprite.speed;
 
-        // input x축 마지막 위치를 넘어갔을 때
+        // input x축 마지막 위치를 넘어갔을 때 -> hidden 풀어준다
         if (sprite.x >= this.spriteInfo.get_input_end_x()) {
           sprite.state = this.PACKET_STATE.WAIT;
           sprite.changeSprite(1);
+          sprite.isHidden = false;//보여준다.
 
           // y축 랜덤
           sprite.x = this.spriteInfo.get_x_rand();
@@ -209,16 +214,21 @@ class Packet {
   }
 
 
-  createPacketLoop() {
-    this.create_packet();
-    this.inputCount++;
+  createPacketLoop(data) {
+    for(let i = 0; i < data.length; i++) {
+      const isHidden = i === 0 ? false : true; //0일때만 그려준다, 묶여서 들어왔을때 첫번째만 그려주고 아니면 안그린다.
+      this.create_packet(data[i].delay, isHidden);
+    }
+
+    this.inputCount += data.length;
+
     // // setTimeout( createPacketLoop, 1000/10 );
-    setTimeout(() => {
-      this.createPacketLoop();
-    }, 200);
+    // setTimeout(() => {
+    //   this.createPacketLoop();
+    // }, 200);
   }
 
-//0.2 초당 랜덤 개수
+  //0.2 초당 랜덤 개수
 
 }
 
