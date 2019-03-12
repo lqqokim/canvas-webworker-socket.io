@@ -4,7 +4,7 @@ class Packet {
   constructor(app) {
     this.app = app;
     this.init = this.init;
-    this.update = this.updatePacket;
+    this.update = this.update123;
 
     this.packets = [];
     this.MOVE_IMAGES = {
@@ -56,7 +56,7 @@ class Packet {
     this.updateOutput();
   }
 
-  updatePacket() {
+  update123() {
     let i = 0;
     let len = this.packets.length;
 

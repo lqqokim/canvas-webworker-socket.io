@@ -1,6 +1,7 @@
 var _WORKER = undefined;
 
 function WORKER() {
+  var _this = this;
   _worker = new Worker('./js/worker/w_in_packet.js');
 
   // 매칭 될 함수
@@ -9,7 +10,10 @@ function WORKER() {
   };
 
   function send(type, data) {
-    _worker.postMessage({type: type, val: data});
+    _worker.postMessage({
+      type: type,
+      val: data
+    });
   }
 
   function on(e) {
@@ -17,7 +21,7 @@ function WORKER() {
     var data = e.data.val;
 
     (match_funcs.hasOwnProperty(type)) && (
-        match_funcs[type](data)
+      match_funcs[type](data)
     );
   }
 
@@ -28,9 +32,8 @@ function WORKER() {
   this.sum = req_sum;
 
   function res_sum(data) {
-    console.log(data)
-    (this.hasOwnProperty('res_sum')) && (
-        this.res_sum(data)
+    (_this.hasOwnProperty('res_sum')) && (
+      _this.res_sum(data)
     );
   }
 
@@ -42,12 +45,28 @@ function WORKER() {
 }
 
 function dom_ready() {
+  if (typeof (Worker) !== "undefined") {
+    _WORKER = new WORKER();
+    _WORKER.sum(10, 20);
+    _WORKER.res_sum = function (result) {
+      console.log('res_sum', result)
+    }
+  } else {
 
-  _WORKER = new WORKER();
-  _WORKER.sum(10, 20);
-  _WORKER.res_sum = function (result) {
-    console.log('res_sum', result)
+
   }
+}
+
+window.addEventListener('DOMContentLoaded', dom_ready, false);
+
+
+
+
+
+
+
+
+
   // var in_packet = new Worker('./js/worker/w_in_packet.js');
   // var value_sum = {
   //     a: 1,
@@ -66,6 +85,3 @@ function dom_ready() {
   // in_packet.onmessage = function (e) { // 받을때
   //     console.log('result => ', e.data);
   // };
-}
-
-window.addEventListener('DOMContentLoaded', dom_ready, false);

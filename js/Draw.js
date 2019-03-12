@@ -21,9 +21,10 @@ class Draw {
   }
 
   updateObj() {
+    // console.log(this.packet)
     this.background.update();
     this.text.update();
-    this.packet.update();
+    this.packet.update123();
   }
 }
 
