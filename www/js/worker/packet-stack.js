@@ -1,19 +1,20 @@
 importScripts('/socket.io/socket.io.js');
 
 //소켓 생성
+// const socket = io();
 const socket = io.connect('http://localhost:3000');
 
 //packet을 쌓는 공간
 const packetStack = [];
 
-//server에서 connect에 대한 
+//server와 연결
 socket.on('connect', () => {
-
+    console.log('server에 연결');
 });
 
 socket.on('packet', (data) => {
+    console.log(data)
     packetStack.push(data);
-    socket.emit('a', 'asd');
 });
 
 //일정 시간 간격으로 stack에 쌓아둔 packet 묶음을 내보낸다.
