@@ -5,7 +5,8 @@
 - Express 웹서버 프레임워크 기반으로 Socket.io 모듈 사용하여 실시간 Packet 전송
 
 ### __Screenshots__
-![packet_view](www/images/packet_view.png)
+<!-- ![packet_view](www/images/screen.gif) -->
+<img src="./www/images/screen.gif" width="600"/>
 
 ### __Installation & Execute__
 > #### Package Installation
